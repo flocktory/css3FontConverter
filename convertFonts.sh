@@ -282,7 +282,56 @@ the --clean option.  See --help for more details.  Bailing. " 1>&2
 
 fi
 
+declare -A CYR_DICTIONARY=(
+    ["Ч"]="Ch"
+    ["Ш"]="Sh"
+    ["Щ"]="Sht"
+    ["Ю"]="Yu"
+    ["Я"]="Ya"
+    ["Ж"]="Zh"
+    ["А"]="A"
+    ["Б"]="B"
+    ["В"]="V"
+    ["Г"]="G"
+    ["Д"]="D"
+    ["Е"]="E"
+    ["З"]="Z"
+    ["И"]="I"
+    ["Й"]="Y"
+    ["К"]="K"
+    ["Л"]="L"
+    ["М"]="M"
+    ["Н"]="N"
+    ["О"]="O"
+    ["П"]="P"
+    ["Р"]="R"
+    ["С"]="S"
+    ["Т"]="T"
+    ["У"]="U"
+    ["Ф"]="F"
+    ["Х"]="H"
+    ["Ц"]="C"
+    ["Ъ"]="A"
+    ["Ь"]="I"
+)
 
+for letter in "${!CYR_DICTIONARY[@]}"; do
+    lowercase_from=$(echo $letter | sed 's/[[:upper:]]*/\L&/')
+    lowercase_to=$(echo ${CYR_DICTIONARY[$letter]} | awk '{print tolower($0)}')
+    CYR_DICTIONARY[$lowercase_from]=$lowercase_to
+done
+
+
+#.. converts cyrillic filenames to latin ones.
+cyr2lat () {
+  LATIN_NAME=$1
+
+  for letter in "${!CYR_DICTIONARY[@]}"; do
+    LATIN_NAME=${LATIN_NAME//$letter/${CYR_DICTIONARY[$letter]}}
+  done
+
+  echo $LATIN_NAME
+}
 
 
 #.. converts a font to TTF
@@ -574,6 +623,15 @@ do
 		if [ "$i" != "$NEW_FILE" ]
 		then
 			echo "Removing spaces in font name."
+			mv $i $NEW_FILE
+			i="$NEW_FILE"
+		fi
+
+		NEW_FILE=`cyr2lat $i`
+
+		if [ "$i" != "$NEW_FILE" ]
+		then
+			echo "Converting cyrillic characters in font name to latin one."
 			mv $i $NEW_FILE
 			i="$NEW_FILE"
 		fi
