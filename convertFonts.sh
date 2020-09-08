@@ -845,7 +845,7 @@ do
 
 	if [ "$IS_OTF" = "0" ]
 	then
-		EXTRA_FONT_INFO=" url('$i.otf')  format('opentype'),
+		EXTRA_FONT_INFO=" url(\"$i.otf\")  format(\"opentype\"),
       "
 	else
 		EXTRA_FONT_INFO=""
@@ -858,18 +858,18 @@ do
 
 		RULE="
 @font-face {
-  font-family: '$FONTNAME';
-  src: url('$i.eot?') format('eot'),"
+  font-family: \"$FONTNAME\";
+  src: url(\"$i.eot?\") format(\"eot\"),"
 
 if [ "$HAS_WOFF2_COMPRESS" = "0" -a -f "$i.woff" ]
 then
 	RULE="$RULE
-       url('$i.woff2') format('woff2'),"
+       url(\"$i.woff2\") format(\"woff2\"),"
 fi
 
 RULE="$RULE
-       url('$i.woff') format('woff'),
-      $EXTRA_FONT_INFO url('$i.ttf')  format('truetype');
+       url(\"$i.woff\") format(\"woff\"),
+      $EXTRA_FONT_INFO url(\"$i.ttf\")  format(\"truetype\");
   font-weight: $FONT_WEIGHT;
   font-style: $FONT_STYLE;"
 
@@ -894,17 +894,17 @@ RULE="$RULE
 
     echo "
 @font-face {
-  font-family: '$FONTNAME';
-  src: url('$i.eot?') format('eot')," >> $STYLESHEETFILE
+  font-family: \"$FONTNAME\";
+  src: url(\"$i.eot?\") format(\"eot\")," >> $STYLESHEETFILE
 
   if [ "$HAS_WOFF2_COMPRESS" = "0" -a -f "$i.woff2" ]
   then
-		echo "       url('$i.woff2') format('woff2')," >> $STYLESHEETFILE
+		echo "       url(\"$i.woff2\") format(\"woff2\")," >> $STYLESHEETFILE
   fi
 
-echo "       url('$i.woff') format('woff'),
-      $EXTRA_FONT_INFO url('$i.ttf')  format('truetype'),
-       url('$i.svg#$SVG_ID') format('svg');
+echo "       url(\"$i.woff\") format(\"woff\"),
+      $EXTRA_FONT_INFO url(\"$i.ttf\")  format(\"truetype\"),
+       url(\"$i.svg#$SVG_ID\") format(\"svg\");
 }" >> $STYLESHEETFILE
   fi
 done
