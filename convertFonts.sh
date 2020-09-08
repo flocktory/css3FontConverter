@@ -13,7 +13,7 @@
 
 # The path should contain the directories where EOTFAST-1.EXE, ttf2eot,
 # fontforge, ttfautohint and all the scripts in the @Font-Face Contruction Set reside.
-# Uncomment the line below with the right directories.  Remember the 
+# Uncomment the line below with the right directories.  Remember the
 # $PATH at the beginning of the string, or the script will forget what
 # was originally in the PATH.
 #PATH="$PATH:/paths/to/other/dependencies/go/here"
@@ -694,37 +694,16 @@ do
 
 		if [ ! -f $FILE_STUB.woff ]
 		then
-			# NOTE: we use $i instead of $NEW_FILE, since woff is
-			# just a wrapper for OTF and TTF.  Having the original
-			# OTF is better here, unless we are autohinting.
-			if [ "$DO_AUTOHINT" != "" ]
-			then
-				echo "Converting $FILE_STUB to woff from converted TTF"
-				toWOFF $NEW_FILE
-			else
-				echo "Converting $FILE_STUB to woff from original font $i."
-				toWOFF $i
-			fi
+			echo "Converting $FILE_STUB to woff from converted TTF"
+			toWOFF $NEW_FILE
 		else
 			echo "$FILE_STUB.woff exists, skipping ..."
 		fi
 
 		if [ ! -f $FILE_STUB.woff2 -a "$HAS_WOFF2_COMPRESS" == "0" ]
 		then
-			# NOTE: we use $i instead of $NEW_FILE, since woff2 is
-			# just a wrapper for OTF and TTF.  Having the original
-			# OTF is better here, unless we are autohinting.
-			if [ "$DO_AUTOHINT" = "" ]
-			then
-				echo "Converting $FILE_STUB to woff2 from original font $i."
-				toWOFF2 $i
-			fi
-
-			if [ "$?" != "0" -o "$DO_AUTOHINT" != "" ]
-			then
-				echo "Converting $FILE_STUB to woff2 from converted TTF ($NEW_FILE)"
-				toWOFF2 $NEW_FILE
-			fi
+			echo "Converting $FILE_STUB to woff2 from converted TTF ($NEW_FILE)"
+			toWOFF2 $NEW_FILE
 		else
 			echo "$FILE_STUB.woff2 exists, skipping ..."
 		fi
